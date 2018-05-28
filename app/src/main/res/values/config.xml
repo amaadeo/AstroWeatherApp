@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_latitude">18.517690</string>
+    <string name="default_longitude">52.015322</string>
+    <string name="default_refresh">15</string>
+
+    <string name="custom_latitude">1</string>
+    <string name="custom_longitude">2</string>
+    <string name="custom_refresh">3</string>
+
+    <string name="current_latitude">4</string>
+    <string name="current_longitude">5</string>
+    <string name="current_refresh">6</string>
+</resources>
