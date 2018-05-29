@@ -12,11 +12,10 @@ import com.example.astro.R;
 
 public class UnitSpinnerAdapter extends BaseAdapter {
 
-    private String[] units;
+    private String[] units = {"°C", "°F"};
     private LayoutInflater inflater;
 
-    public UnitSpinnerAdapter(Activity activity, String[] units) {
-        this.units = units;
+    public UnitSpinnerAdapter(Activity activity) {
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override

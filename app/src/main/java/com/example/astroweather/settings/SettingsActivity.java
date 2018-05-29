@@ -29,31 +29,24 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private String latitude;
     private String refresh;
     private SharedPreferences sharedPreferences;
-    private String[] units = {"°C", "°F"};
+    private UnitSpinnerAdapter unitSpinnerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        longitudeValue = findViewById(R.id.longitudeValue);
-        latitudeValue = findViewById(R.id.latitudeValue);
-        refreshValue = findViewById(R.id.refreshValue);
-        saveButton = findViewById(R.id.saveButton);
-        loadButton = findViewById(R.id.loadButton);
-        defaultButton = findViewById(R.id.defaultButton);
-        spinnerUnit = findViewById(R.id.spinnerUnit);
-
-        saveButton.setOnClickListener(this);
-        loadButton.setOnClickListener(this);
-        defaultButton.setOnClickListener(this);
-
+        initElements();
         sharedPreferences = getSharedPreferences("config.xml", 0);
-
         loadConfig("current");
         setValuesText();
 
-        UnitSpinnerAdapter unitSpinnerAdapter = new UnitSpinnerAdapter(this, units);
+        initUnitSpinnerAdapter();
+    }
+
+    private void initUnitSpinnerAdapter() {
+        unitSpinnerAdapter = new UnitSpinnerAdapter(this);
         spinnerUnit.setAdapter(unitSpinnerAdapter);
 
         spinnerUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -67,7 +60,20 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
             }
         });
+    }
 
+    private void initElements() {
+        longitudeValue = findViewById(R.id.longitudeValue);
+        latitudeValue = findViewById(R.id.latitudeValue);
+        refreshValue = findViewById(R.id.refreshValue);
+        saveButton = findViewById(R.id.saveButton);
+        loadButton = findViewById(R.id.loadButton);
+        defaultButton = findViewById(R.id.defaultButton);
+        spinnerUnit = findViewById(R.id.spinnerUnit);
+
+        saveButton.setOnClickListener(this);
+        loadButton.setOnClickListener(this);
+        defaultButton.setOnClickListener(this);
     }
 
     @Override
@@ -81,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             case R.id.loadButton:
                 setValues();
                 loadConfig("custom");
-                saveCurrentConfig();
+                saveConfig("current");
                 setValuesText();
                 Toast.makeText(SettingsActivity.this, "Poprawnie wczytano dane!", Toast.LENGTH_LONG).show();
                 break;
@@ -89,7 +95,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             case R.id.defaultButton:
                 setValues();
                 loadConfig("default");
-                saveCurrentConfig();
+                saveConfig("current");
                 setValuesText();
                 Toast.makeText(SettingsActivity.this, "Poprawnie wczytano dane!", Toast.LENGTH_LONG).show();
                 break;
@@ -102,13 +108,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 if ((Double.valueOf(latitudeValue) >= -90 && Double.valueOf(latitudeValue) <= 90) &&
                         (Double.valueOf(longitudeValue) >= -180 && Double.valueOf(longitudeValue) <= 180) &&
                         (Integer.valueOf(refreshValue) > 0 && Integer.valueOf(refreshValue) <= 60)) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("custom_longitude", longitudeValue);
-                    editor.putString("custom_latitude", latitudeValue);
-                    editor.putString("custom_refresh", refreshValue);
-
-                    editor.apply();
-                    saveCurrentConfig();
+                    saveConfig("custom");
+                    saveConfig("current");
                     Toast.makeText(SettingsActivity.this, "Poprawnie zapisano nowe dane!", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(SettingsActivity.this, "Dane są poza zakresem!", Toast.LENGTH_LONG).show();
@@ -122,12 +123,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void saveCurrentConfig() {
+    private void saveConfig(String configType) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("current_longitude", longitude);
-        editor.putString("current_latitude", latitude);
-        editor.putString("current_refresh", refresh);
-
+        editor.putString(configType + "_longitude", longitude);
+        editor.putString(configType + "_latitude", latitude);
+        editor.putString(configType + "_refresh", refresh);
         editor.apply();
     }
 
@@ -135,7 +135,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         longitude = sharedPreferences.getString(configType + "_longitude", String.valueOf(getResources().getString(R.string.default_longitude)));
         latitude = sharedPreferences.getString(configType + "_latitude", String.valueOf(getResources().getString(R.string.default_latitude)));
         refresh = sharedPreferences.getString(configType + "_refresh", String.valueOf(getResources().getString(R.string.default_refresh)));
-
     }
 
     private void setValues() {
