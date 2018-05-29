@@ -1,19 +1,16 @@
-package com.example.astro;
+package com.example.astroweather.settings;
 
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.regex.Pattern;
-
-import javax.xml.validation.Validator;
-
-import static java.util.regex.Pattern.compile;
+import com.example.astro.R;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,11 +23,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private Button saveButton;
     private Button loadButton;
     private Button defaultButton;
+    private Spinner spinnerUnit;
 
     private String longitude;
     private String latitude;
     private String refresh;
     private SharedPreferences sharedPreferences;
+    private String[] units = {"°C", "°F"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         saveButton = findViewById(R.id.saveButton);
         loadButton = findViewById(R.id.loadButton);
         defaultButton = findViewById(R.id.defaultButton);
+        spinnerUnit = findViewById(R.id.spinnerUnit);
 
         saveButton.setOnClickListener(this);
         loadButton.setOnClickListener(this);
@@ -52,6 +52,21 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         loadConfig("current");
         setValuesText();
+
+        UnitSpinnerAdapter unitSpinnerAdapter = new UnitSpinnerAdapter(this, units);
+        spinnerUnit.setAdapter(unitSpinnerAdapter);
+
+        spinnerUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 

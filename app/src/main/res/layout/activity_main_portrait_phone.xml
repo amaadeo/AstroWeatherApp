@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context="com.example.astroweather.MainActivity"
     tools:layout_editor_absoluteY="25dp">
 
     <LinearLayout
@@ -38,7 +38,8 @@
                 android:format24Hour="kk:mm:ss"
                 android:gravity="center"
                 android:textAlignment="center"
-                android:textSize="36sp" />
+                android:textSize="36sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -85,7 +86,7 @@
             android:orientation="horizontal">
 
             <android.support.v4.view.ViewPager
-                android:id="@+id/viewPager"
+                android:id="@+id/viewPagerPhonePortrait"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"

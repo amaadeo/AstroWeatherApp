@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context="com.example.astroweather.MainActivity"
     tools:layout_editor_absoluteY="25dp">
 
     <LinearLayout
@@ -79,15 +79,29 @@
             android:orientation="horizontal">
 
             <fragment
-                android:id="@+id/list"
-                android:name="com.example.astro.SunFragment"
+                android:id="@+id/basicDataFragment"
+                android:name="com.example.astroweather.weather.BasicDataFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <fragment
-                android:id="@+id/viewer"
-                android:name="com.example.astro.MoonFragment"
+                android:id="@+id/additionalDataFragment"
+                android:name="com.example.astroweather.weather.AdditionalDataFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <fragment
+                android:id="@+id/sunFragment"
+                android:name="com.example.astroweather.astro.SunFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <fragment
+                android:id="@+id/moonFragment"
+                android:name="com.example.astroweather.astro.MoonFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />

@@ -1,14 +1,19 @@
-package com.example.astro;
+package com.example.astroweather;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.astroweather.astro.MoonFragment;
+import com.example.astroweather.astro.SunFragment;
+import com.example.astroweather.weather.AdditionalDataFragment;
+import com.example.astroweather.weather.BasicDataFragment;
 
-public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+
+public class ScreenSlidePagerAdapterPortrait extends FragmentStatePagerAdapter {
     private static final int NUM_PAGES = 5;
 
-    public ScreenSlidePagerAdapter(FragmentManager fragmentManager) {
+    public ScreenSlidePagerAdapterPortrait(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
 
@@ -22,13 +27,13 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
                 return new AdditionalDataFragment();
             }
             case 2: {
-                return new LongTermWeatherForecastFragment();
+                //return new LongTermWeatherForecastFragment();
             }
             case 3: {
-                return new MoonFragment();
+                return new SunFragment();
             }
             case 4: {
-                return new SunFragment();
+                return new MoonFragment();
             }
         }
         return null;

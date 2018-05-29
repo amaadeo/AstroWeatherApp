@@ -1,4 +1,4 @@
-package com.example.astro;
+package com.example.astroweather.astro;
 
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.astrocalculator.AstroCalculator;
 import com.astrocalculator.AstroDateTime;
+import com.example.astro.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MoonFragment"
+    tools:context="com.example.astroweather.astro.MoonFragment"
     android:background="@drawable/moon_new">
 
     <LinearLayout
@@ -57,7 +57,6 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:text="      Zachód księżyca"
-                android:textAlignment="textStart"
                 android:textColor="@android:color/background_light"
                 android:textSize="18sp"
                 android:textStyle="bold" />

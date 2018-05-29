@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context="com.example.astroweather.MainActivity"
     tools:layout_editor_absoluteY="25dp">
 
     <LinearLayout
@@ -34,11 +34,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
+                android:format12Hour="hh:mm:ss aa"
+                android:format24Hour="kk:mm:ss"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:textSize="36sp"
-                android:format12Hour="hh:mm:ss aa"
-                android:format24Hour="kk:mm:ss" />
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -84,19 +85,15 @@
             android:layout_weight="0.1"
             android:orientation="horizontal">
 
-            <fragment
-                android:id="@+id/list"
-                android:name="com.example.astro.SunFragment"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPagerTabletPortrait"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-            <fragment
-                android:id="@+id/viewer"
-                android:name="com.example.astro.MoonFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+            </android.support.v4.view.ViewPager>
         </LinearLayout>
 
     </LinearLayout>

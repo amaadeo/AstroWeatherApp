@@ -3,10 +3,14 @@
     <string name="settings_name">Ustawienia</string>
     <string name="about_name">Info</string>
     <string name="exit_name">Wyjście</string>
+    <string name="city_name">Miasto</string>
     <string name="longitude_name">Długość geograficzna</string>
     <string name="latitude_name">Szerokość geograficzna</string>
     <string name="refresh_name">Czas odświeżania</string>
     <string name="save_button">Zapisz</string>
     <string name="load_button">Wczytaj</string>
     <string name="default_button">Default</string>
+    <string name="unit">Jednostka: </string>
+    <string name="celsius">°C</string>
+    <string name="fahrenheit">°F</string>
 </resources>
