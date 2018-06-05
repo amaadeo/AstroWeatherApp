@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.9"
+            android:layout_weight="1"
 
             android:orientation="vertical">
 
@@ -47,7 +47,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.9"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -55,7 +55,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:gravity="center"
                 android:text="      Zachód księżyca"
                 android:textColor="@android:color/background_light"
                 android:textSize="18sp"

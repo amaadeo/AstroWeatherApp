@@ -23,6 +23,8 @@ import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.lang.Math.round;
+
 public class MoonFragment extends Fragment {
 
     private static final int MINUTE_IN_MILISECONDS = 60000;
@@ -40,8 +42,6 @@ public class MoonFragment extends Fragment {
     private DateFormat dayFormat;
     private DateFormat hourFormat;
     private DateFormat minuteFormat;
-    private DateFormat secondFormat;
-
 
     AstroCalculator astroCalculator;
     AstroCalculator.Location location;
@@ -54,21 +54,8 @@ public class MoonFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_moon, container, false);
 
-        moonriseTimeText = rootView.findViewById(R.id.moonriseTimeText);
-        moonsetTimeText = rootView.findViewById(R.id.moonsetTimeText);
-        fullMoonDateText = rootView.findViewById(R.id.fullMoonDateText);
-        newMoonDateText = rootView.findViewById(R.id.newMoonDateText);
-        synodicDayText = rootView.findViewById(R.id.synodicDayText);
-        moonPhasePercentText = rootView.findViewById(R.id.moonPhasePercentText);
-
-        date = new Date();
-        yearFormat = new SimpleDateFormat("yyyy");
-        monthFormat = new SimpleDateFormat("MM");
-        dayFormat = new SimpleDateFormat("dd");
-        hourFormat = new SimpleDateFormat("hh");
-        minuteFormat = new SimpleDateFormat("mm");
-        secondFormat = new SimpleDateFormat("ss");
-
+        initElements(rootView);
+        initTime();
         setAstroCalculator();
         setData();
 
@@ -85,7 +72,6 @@ public class MoonFragment extends Fragment {
                 runThread(refreshTime);
             }
         };
-        System.out.println(thread.getName());
         thread.start();
     }
 
@@ -116,15 +102,22 @@ public class MoonFragment extends Fragment {
 
     }
 
-    private int getTimeZone() {
-        Calendar c = Calendar.getInstance();
+    private void initElements(ViewGroup rootView) {
+        moonriseTimeText = rootView.findViewById(R.id.moonriseTimeText);
+        moonsetTimeText = rootView.findViewById(R.id.moonsetTimeText);
+        fullMoonDateText = rootView.findViewById(R.id.fullMoonDateText);
+        newMoonDateText = rootView.findViewById(R.id.newMoonDateText);
+        synodicDayText = rootView.findViewById(R.id.synodicDayText);
+        moonPhasePercentText = rootView.findViewById(R.id.moonPhasePercentText);
+    }
 
-        TimeZone z = c.getTimeZone();
-        int offset = z.getRawOffset();
-        if (z.inDaylightTime(new Date())) {
-            offset = offset + z.getDSTSavings();
-        }
-        return offset / 1000 / 60 / 60;
+    private void initTime() {
+        date = new Date();
+        yearFormat = new SimpleDateFormat("yyyy");
+        monthFormat = new SimpleDateFormat("MM");
+        dayFormat = new SimpleDateFormat("dd");
+        hourFormat = new SimpleDateFormat("hh");
+        minuteFormat = new SimpleDateFormat("mm");
     }
 
     private void setAstroCalculator() {
@@ -153,12 +146,23 @@ public class MoonFragment extends Fragment {
         refreshTime = Integer.valueOf(sharedPref.getString("current_refresh", String.valueOf(getResources().getString(R.string.default_refresh))));
     }
 
+    private int getTimeZone() {
+        Calendar c = Calendar.getInstance();
+
+        TimeZone z = c.getTimeZone();
+        int offset = z.getRawOffset();
+        if (z.inDaylightTime(new Date())) {
+            offset = offset + z.getDSTSavings();
+        }
+        return offset / 1000 / 60 / 60;
+    }
+
     private void setData() {
         moonriseTimeText.setText(String.valueOf(astroCalculator.getMoonInfo().getMoonrise()));
         moonsetTimeText.setText(String.valueOf(astroCalculator.getMoonInfo().getMoonset()));
         newMoonDateText.setText(String.valueOf(astroCalculator.getMoonInfo().getNextNewMoon()));
         fullMoonDateText.setText(String.valueOf(astroCalculator.getMoonInfo().getNextFullMoon()));
-        moonPhasePercentText.setText(String.valueOf(astroCalculator.getMoonInfo().getIllumination()));
+        moonPhasePercentText.setText(String.valueOf(round(astroCalculator.getMoonInfo().getIllumination() * 100) + "%"));
         synodicDayText.setText(String.valueOf(astroCalculator.getMoonInfo().getAge()));
     }
 }
