@@ -46,8 +46,8 @@
                 android:layout_height="100dp"
                 android:layout_weight="1"
                 android:cropToPadding="false"
-                android:scaleType="fitXY"
-                app:srcCompat="@android:drawable/btn_star_big_on" />
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/icon_44" />
 
             <TextView
                 android:id="@+id/temperatureText"
