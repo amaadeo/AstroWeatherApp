@@ -6,7 +6,8 @@ public class Channel implements JSONPopulator {
 
     private Item item;
     private Units units;
-
+    private Location location;
+    private Atmosphere atmosphere;
 
     @Override
     public void populate(JSONObject data) {
@@ -15,6 +16,16 @@ public class Channel implements JSONPopulator {
 
         this.item = new Item();
         this.item.populate(data.optJSONObject("item"));
+
+        this.location = new Location();
+        this.location.populate(data.optJSONObject("location"));
+
+        this.atmosphere = new Atmosphere();
+        this.atmosphere.populate(data.optJSONObject("atmosphere"));
+    }
+
+    public Atmosphere getAtmosphere() {
+        return atmosphere;
     }
 
     public Item getItem() {
@@ -23,5 +34,9 @@ public class Channel implements JSONPopulator {
 
     public Units getUnits() {
         return units;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 }

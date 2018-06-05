@@ -12,5 +12,6 @@
     <string name="default_button">Default</string>
     <string name="unit">Jednostka: </string>
     <string name="celsius">°C</string>
-    <string name="fahrenheit">°F</string>
+    <string name="fahrenheit"> °F</string>
+    <string name="grade">°</string>
 </resources>

@@ -11,4 +11,8 @@ public class Item implements JSONPopulator {
         this.condition = new Condition();
         this.condition.populate(data.optJSONObject("condition"));
     }
+
+    public Condition getCondition() {
+        return condition;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.astroweather.service;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import com.example.astroweather.data.Channel;
@@ -15,17 +16,21 @@ public class YahooWeatherService {
 
     private WeatherServiceCallBack callBack;
     private Exception error;
+    private String location;
 
     public YahooWeatherService(WeatherServiceCallBack callBack) {
         this.callBack = callBack;
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void refreshWeather(final String location) {
-        new AsyncTask<String, Void, String>() {
+        this.location = location;
+        new  AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
 
                 String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", location);
+
                 String endpoint = String.format("https://query.yahooapis.com/v1/public/yql?q=%s&format=json", Uri.encode(YQL));
 
                 try {
@@ -35,17 +40,17 @@ public class YahooWeatherService {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                     StringBuilder result = new StringBuilder();
                     String line;
-
                     while ((line = reader.readLine()) != null) {
                         result.append(line);
                     }
 
-                    return reader.toString();
+                    return result.toString();
 
                 } catch (Exception e) {
                     error = e;
-                    return null;
                 }
+
+                return null;
             }
 
             @Override
@@ -60,7 +65,7 @@ public class YahooWeatherService {
                 try {
                     JSONObject data = new JSONObject(s);
 
-                    JSONObject queryResults = data.getJSONObject("qurey");
+                    JSONObject queryResults = data.getJSONObject("query");
 
                     int count = queryResults.optInt("count");
 
@@ -80,4 +85,10 @@ public class YahooWeatherService {
             }
         }.execute(location);
     }
+
+
+    public String getLocation() {
+        return location;
+    }
+
 }
