@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.astroweather.astro.MoonFragment"
-    android:background="@drawable/moon_new">
+    android:background="@drawable/background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#82000000">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,6 +25,7 @@
                 android:layout_weight="0.5"
                 android:text="      Wschód księżyca"
                 android:textAlignment="textStart"
+                android:textAllCaps="false"
                 android:textColor="@android:color/background_light"
                 android:textSize="18sp"
                 android:textStyle="bold" />

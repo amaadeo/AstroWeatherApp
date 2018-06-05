@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.astroweather.astro.SunFragment"
-    android:background="@drawable/sun_new">
+    android:background="@drawable/background">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#82000000"
         android:orientation="vertical">
 
         <LinearLayout
@@ -27,9 +26,9 @@
                 android:layout_weight="1"
                 android:text="      Wschód słońca"
                 android:textAlignment="textStart"
-                android:textColor="@android:color/white"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/sunriseTimeText"
@@ -109,9 +108,9 @@
                 android:layout_weight="1"
                 android:text="      Zmierzch słońca"
                 android:textAlignment="textStart"
-                android:textColor="@android:color/white"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/twilightTimeText"
@@ -120,9 +119,9 @@
                 android:layout_weight="1"
                 android:text="TextView"
                 android:textAlignment="center"
-                android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@android:color/white"/>
 
         </LinearLayout>
 
@@ -139,9 +138,9 @@
                 android:layout_weight="1"
                 android:text="      Świt cywilny słońca"
                 android:textAlignment="textStart"
-                android:textColor="@android:color/white"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/dawnTimeText"
@@ -150,9 +149,9 @@
                 android:layout_weight="1"
                 android:text="TextView"
                 android:textAlignment="center"
-                android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@android:color/white"/>
 
         </LinearLayout>
 
