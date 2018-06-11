@@ -10,12 +10,12 @@ import android.widget.TextView;
 
 import com.example.astro.R;
 
-public class UnitSpinnerAdapter extends BaseAdapter {
+public class TemperatureUnitSpinnerAdapter extends BaseAdapter {
 
-    private String[] units = {"°C", "°F"};
+    private String[] units = {"°F", "°C"};
     private LayoutInflater inflater;
 
-    public UnitSpinnerAdapter(Activity activity) {
+    public TemperatureUnitSpinnerAdapter(Activity activity) {
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -25,6 +25,14 @@ public class UnitSpinnerAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
+        switch (position){
+            case 0: {
+                return units[0];
+            }
+            case 1: {
+                return units[1];
+            }
+        }
         return null;
     }
 
