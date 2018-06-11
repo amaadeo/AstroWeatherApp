@@ -1,5 +1,6 @@
 package com.example.astroweather.weather;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,19 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.astro.R;
-import com.example.astroweather.data.Atmosphere;
-import com.example.astroweather.data.Channel;
-import com.example.astroweather.data.Item;
-import com.example.astroweather.data.Location;
-import com.example.astroweather.service.WeatherServiceCallBack;
-import com.example.astroweather.service.YahooWeatherService;
+import com.example.astroweather.settings.TemperatureUnitSpinnerAdapter;
 
 import java.util.Objects;
 
-public class BasicDataFragment extends Fragment implements WeatherServiceCallBack {
+public class BasicDataFragment extends Fragment {
 
     private TextView cityNameText;
     private TextView dateTimeText;
@@ -28,6 +25,10 @@ public class BasicDataFragment extends Fragment implements WeatherServiceCallBac
     private TextView temperatureText;
     private TextView descriptionText;
     private TextView pressureText;
+    private SharedPreferences sharedPreferences;
+    private TemperatureUnitSpinnerAdapter unitSpinnerAdapter;
+    private Spinner spinnerUnit;
+    private String temperatureUnit = "°F";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -43,35 +44,22 @@ public class BasicDataFragment extends Fragment implements WeatherServiceCallBac
         descriptionText = rootView.findViewById(R.id.descriptionText);
         pressureText = rootView.findViewById(R.id.pressureText);
 
+        sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences("weather.xml", 0);
 
-        YahooWeatherService service = new YahooWeatherService(this);
 
-        service.refreshWeather("Lodz");
+        int resource = getResources().getIdentifier("icon_" + sharedPreferences.getString("current_image_code", "44"), "drawable", Objects.requireNonNull(getContext()).getPackageName());
+        Drawable weatherIconDrawable = getResources().getDrawable(resource, null);
+
+        cityNameText.setText(sharedPreferences.getString("city", "NULL") + ", " + sharedPreferences.getString("country", "NULL"));
+        dateTimeText.setText(sharedPreferences.getString("current_date", "NULL"));
+        weatherImage.setImageDrawable(weatherIconDrawable);
+
+        temperatureText.setText(sharedPreferences.getString("current_temperature", "NULL") + temperatureUnit);
+        descriptionText.setText(sharedPreferences.getString("current_description", "NULL"));
+        pressureText.setText(sharedPreferences.getString("pressure", "NULL"));
 
         return rootView;
     }
 
-    @Override
-    public void serviceSuccess(Channel channel) {
-        Item item = channel.getItem();
-        Location location = channel.getLocation();
-        Atmosphere atmosphere = channel.getAtmosphere();
 
-        int resource = getResources().getIdentifier("icon_" + item.getCondition().getCode(), "drawable", Objects.requireNonNull(getContext()).getPackageName());
-
-        Drawable weatherIconDrawable = getResources().getDrawable(resource, null);
-
-        cityNameText.setText(String.format("%s, %s", location.getCity(), location.getCountry()));
-        dateTimeText.setText(item.getCondition().getDate().substring(0, 16));
-        weatherImage.setImageDrawable(weatherIconDrawable);
-        temperatureText.setText(String.format("%s°%s", String.valueOf(item.getCondition().getTemperature()), channel.getUnits().getTempertature()));
-        descriptionText.setText(item.getCondition().getDescription());
-        pressureText.setText(String.format("%s hPa", atmosphere.getPressure()));
-
-    }
-
-    @Override
-    public void serviceFailure(Exception excepiton) {
-
-    }
 }
