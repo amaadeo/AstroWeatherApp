@@ -24,11 +24,38 @@
                 android:layout_weight="0.68"
                 android:gravity="center"
                 android:paddingRight="10dp"
-                android:text="@string/unit"
+                android:text="@string/temperature_unit"
                 android:textSize="24sp" />
 
             <Spinner
-                android:id="@+id/spinnerUnit"
+                android:id="@+id/spinnerTemperatureUnit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="50dp"
+                android:layout_weight="0.9"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textVie7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.68"
+                android:gravity="center"
+                android:paddingRight="10dp"
+                android:text="@string/speed_unit"
+                android:textSize="24sp" />
+
+            <Spinner
+                android:id="@+id/spinnerSpeedUnit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="50dp"
