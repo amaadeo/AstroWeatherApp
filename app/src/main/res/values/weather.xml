@@ -38,5 +38,6 @@
     <string name="high_temperature_5"></string>
     <string name="low_temperature_5"></string>
     <string name="description_5"></string>
-    <string name="unit"></string>
+    <string name="temperature_unit">0</string>
+    <string name="speed_unit">0</string>
 </resources>

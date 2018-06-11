@@ -10,16 +10,16 @@ public class Item implements JSONPopulator {
     private Condition condition;
     private Forecast[] forecast;
     private JSONArray jsonArray;
-    private float longitude;
-    private float latitude;
+    private String longitude;
+    private String latitude;
 
     @Override
     public void populate(JSONObject data) {
         this.condition = new Condition();
         this.condition.populate(data.optJSONObject("condition"));
 
-        this.longitude = (float) data.optDouble("long");
-        this.latitude = (float) data.optDouble("lat");
+        this.longitude = data.optString("long");
+        this.latitude = data.optString("lat");
 
         this.jsonArray = data.optJSONArray("forecast");
         this.forecast = new Forecast[NUMBER_OF_DAYS];
@@ -43,11 +43,11 @@ public class Item implements JSONPopulator {
         return forecast[day];
     }
 
-    public float getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public float getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 }

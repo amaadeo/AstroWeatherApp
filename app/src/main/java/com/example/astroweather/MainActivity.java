@@ -43,10 +43,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         service = new YahooWeatherService(this);
         service.refreshWeather("Lodz");
         sharedPreferences = getSharedPreferences("weather.xml", 0);
-        setUpLayout();
-        initElements();
-        getConfigValues();
-        setLongitudeLatitude();
+
     }
 
     private void setUpLayout() {
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         if (config.orientation == PORTRAIT) {
             setContentView(R.layout.activity_main_portrait_tablet);
             ViewPager viewPagerTabletPortrait = findViewById(R.id.viewPagerTabletPortrait);
-            setUpPortraitAdapter(viewPagerTabletPortrait);
+            setUpLandscapeAdapter(viewPagerTabletPortrait);
         } else if (config.orientation == LANDSCAPE) {
             setContentView(R.layout.activity_main_landscape_tablet);
         }
@@ -103,9 +100,8 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
     }
 
     private void getConfigValues() {
-        SharedPreferences sharedPreferences = getSharedPreferences("config.xml", 0);
-        longitude = sharedPreferences.getString("current_longitude", String.valueOf(getResources().getString(R.string.default_longitude)));
-        latitude = sharedPreferences.getString("current_latitude", String.valueOf(getResources().getString(R.string.default_latitude)));
+        longitude = sharedPreferences.getString("longitude", String.valueOf(getResources().getString(R.string.default_longitude)));
+        latitude = sharedPreferences.getString("latitude", String.valueOf(getResources().getString(R.string.default_latitude)));
     }
 
     private void setLongitudeLatitude() {
@@ -114,7 +110,8 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
     }
 
     @Override
-    public void onBackPressed() {
+    public void onRestart() {
+        super.onRestart();
         service = new YahooWeatherService(this);
         service.refreshWeather("Lodz");
         sharedPreferences = getSharedPreferences("weather.xml", 0);
@@ -122,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         initElements();
         getConfigValues();
         setLongitudeLatitude();
+
+        Toast.makeText(MainActivity.this, "BACK", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -178,8 +177,8 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         editor.putString("humidity", atmosphere.getHumidity());
         editor.putString("pressure", atmosphere.getPressure());
         editor.putString("visibility", atmosphere.getVisibility());
-        editor.putFloat("longitude", item.getLongitude());
-        editor.putFloat("latitude", item.getLatitude());
+        editor.putString("longitude", item.getLongitude());
+        editor.putString("latitude", item.getLatitude());
         editor.putString("current_image_code", item.getCondition().getCode());
         editor.putString("current_date", item.getCondition().getDate());
         editor.putString("current_temperature", item.getCondition().getTemperature());
@@ -193,6 +192,11 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
             editor.putString("description_" + i, item.getForecast(i).getDescription());
         }
         editor.apply();
+
+        setUpLayout();
+        initElements();
+        getConfigValues();
+        setLongitudeLatitude();
     }
 
     @Override

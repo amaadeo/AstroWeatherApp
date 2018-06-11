@@ -2,6 +2,7 @@ package com.example.astroweather.settings;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ public class TemperatureUnitSpinnerAdapter extends BaseAdapter {
 
     private String[] units = {"°F", "°C"};
     private LayoutInflater inflater;
+    private SharedPreferences sharedPreferences;
 
     public TemperatureUnitSpinnerAdapter(Activity activity) {
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.sharedPreferences = activity.getSharedPreferences("weather.xml", 0);
     }
     @Override
     public int getCount() {

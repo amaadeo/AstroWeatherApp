@@ -93,6 +93,13 @@
                 android:layout_weight="1" />
 
             <fragment
+                android:id="@+id/forecastFragment"
+                android:name="com.example.astroweather.weather.ForecastFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <fragment
                 android:id="@+id/sunFragment"
                 android:name="com.example.astroweather.astro.SunFragment"
                 android:layout_width="match_parent"

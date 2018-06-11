@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.example.astro.R;
 
+import java.util.regex.Pattern;
+
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final static String VALUE_REGEX = "^-?\\d*\\.\\d+$|^-?\\d+$";
@@ -30,9 +32,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private String latitude;
     private String refresh;
     private SharedPreferences sharedPreferences;
+    private SharedPreferences shared;
     private TemperatureUnitSpinnerAdapter temperatureUnitSpinnerAdapter;
     private SpeedUnitSpinnerAdapter speedUnitSpinnerAdapter;
     private String temperatureUnit;
+    private String speedUnit;
 
 
     @Override
@@ -42,8 +46,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         initElements();
         sharedPreferences = getSharedPreferences("config.xml", 0);
+        shared = getSharedPreferences("weather.xml", 0);
         loadConfig("current");
         setValuesText();
+        temperatureUnit = shared.getString("temperature_unit", "0");
 
         initTemperatureUnitSpinnerAdapter();
         initSpeedUnitSpinnerAdapter();
@@ -53,15 +59,16 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         temperatureUnitSpinnerAdapter = new TemperatureUnitSpinnerAdapter(this);
         spinnerTemperatureUnit.setAdapter(temperatureUnitSpinnerAdapter);
 
+        spinnerTemperatureUnit.setSelection(Integer.parseInt(temperatureUnit));
         spinnerTemperatureUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        temperatureUnit = "°C";
+                        temperatureUnit = "0";
                         break;
                     case 1:
-                        temperatureUnit = "°F";
+                        temperatureUnit = "1";
                         break;
                 }
             }
@@ -82,10 +89,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        temperatureUnit = "°C";
+                        speedUnit = "mph";
                         break;
                     case 1:
-                        temperatureUnit = "°F";
+                        speedUnit = "km/h";
                         break;
                 }
             }
@@ -161,10 +168,15 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     private void saveConfig(String configType) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor edit = shared.edit();
         editor.putString(configType + "_longitude", longitude);
         editor.putString(configType + "_latitude", latitude);
         editor.putString(configType + "_refresh", refresh);
 
+        edit.putString("temperature_unit", temperatureUnit);
+        edit.putString("speed_unit", speedUnit);
+
+        edit.apply();
         editor.apply();
     }
 

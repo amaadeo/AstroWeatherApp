@@ -27,8 +27,8 @@ public class BasicDataFragment extends Fragment {
     private TextView pressureText;
     private SharedPreferences sharedPreferences;
     private TemperatureUnitSpinnerAdapter unitSpinnerAdapter;
-    private Spinner spinnerUnit;
-    private String temperatureUnit = "°F";
+    private String temperatureUnit;
+    private String temperature;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -44,22 +44,29 @@ public class BasicDataFragment extends Fragment {
         descriptionText = rootView.findViewById(R.id.descriptionText);
         pressureText = rootView.findViewById(R.id.pressureText);
 
+
         sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences("weather.xml", 0);
 
+        temperature = sharedPreferences.getString("current_temperature", "NULL");
+
+        if((sharedPreferences.getString("temperature_unit", "NULL")).equals("0") || sharedPreferences.getString("temperature_unit", "NULL").equals("NULL")) {
+            temperatureUnit = "°F";
+        } else {
+            temperatureUnit = "°C";
+            temperature = String.valueOf((int)((Integer.parseInt(temperature) - 32) / 1.8));
+        }
 
         int resource = getResources().getIdentifier("icon_" + sharedPreferences.getString("current_image_code", "44"), "drawable", Objects.requireNonNull(getContext()).getPackageName());
         Drawable weatherIconDrawable = getResources().getDrawable(resource, null);
 
         cityNameText.setText(sharedPreferences.getString("city", "NULL") + ", " + sharedPreferences.getString("country", "NULL"));
-        dateTimeText.setText(sharedPreferences.getString("current_date", "NULL"));
+        dateTimeText.setText(sharedPreferences.getString("current_date", "NULL").substring(0, 16));
         weatherImage.setImageDrawable(weatherIconDrawable);
 
-        temperatureText.setText(sharedPreferences.getString("current_temperature", "NULL") + temperatureUnit);
+        temperatureText.setText(temperature + temperatureUnit);
         descriptionText.setText(sharedPreferences.getString("current_description", "NULL"));
-        pressureText.setText(sharedPreferences.getString("pressure", "NULL"));
+        pressureText.setText(sharedPreferences.getString("pressure", "NULL") + " hPa");
 
         return rootView;
     }
-
-
 }

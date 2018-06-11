@@ -24,7 +24,7 @@
                 android:layout_weight="0.68"
                 android:gravity="center"
                 android:paddingRight="10dp"
-                android:text="@string/temperature_unit"
+                android:text="@string/temperature_unit_text"
                 android:textSize="18sp" />
 
             <Spinner
@@ -51,7 +51,7 @@
                 android:layout_weight="0.68"
                 android:gravity="center"
                 android:paddingRight="10dp"
-                android:text="@string/speed_unit"
+                android:text="@string/speed_unit_text"
                 android:textSize="18sp" />
 
             <Spinner

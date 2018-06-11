@@ -10,8 +10,8 @@
     <string name="save_button">Zapisz</string>
     <string name="load_button">Wczytaj</string>
     <string name="default_button">Default</string>
-    <string name="temperature_unit">Jednostka temperatury: </string>
-    <string name="speed_unit">Jednostka prędkości: </string>
+    <string name="temperature_unit_text">Jednostka temperatury: </string>
+    <string name="speed_unit_text">Jednostka prędkości: </string>
     <string name="celsius">°C</string>
     <string name="fahrenheit"> °F</string>
     <string name="grade">°</string>
