@@ -23,13 +23,16 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private Button saveButton;
     private Button loadButton;
     private Button defaultButton;
-    private Spinner spinnerUnit;
+    private Spinner spinnerTemperatureUnit;
+    private Spinner spinnerSpeedUnit;
 
     private String longitude;
     private String latitude;
     private String refresh;
     private SharedPreferences sharedPreferences;
-    private UnitSpinnerAdapter unitSpinnerAdapter;
+    private TemperatureUnitSpinnerAdapter temperatureUnitSpinnerAdapter;
+    private SpeedUnitSpinnerAdapter speedUnitSpinnerAdapter;
+    private String temperatureUnit;
 
 
     @Override
@@ -42,17 +45,49 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         loadConfig("current");
         setValuesText();
 
-        initUnitSpinnerAdapter();
+        initTemperatureUnitSpinnerAdapter();
+        initSpeedUnitSpinnerAdapter();
     }
 
-    private void initUnitSpinnerAdapter() {
-        unitSpinnerAdapter = new UnitSpinnerAdapter(this);
-        spinnerUnit.setAdapter(unitSpinnerAdapter);
+    private void initTemperatureUnitSpinnerAdapter() {
+        temperatureUnitSpinnerAdapter = new TemperatureUnitSpinnerAdapter(this);
+        spinnerTemperatureUnit.setAdapter(temperatureUnitSpinnerAdapter);
 
-        spinnerUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerTemperatureUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        temperatureUnit = "°C";
+                        break;
+                    case 1:
+                        temperatureUnit = "°F";
+                        break;
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void initSpeedUnitSpinnerAdapter() {
+        speedUnitSpinnerAdapter = new SpeedUnitSpinnerAdapter(this);
+        spinnerSpeedUnit.setAdapter(speedUnitSpinnerAdapter);
+
+        spinnerSpeedUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        temperatureUnit = "°C";
+                        break;
+                    case 1:
+                        temperatureUnit = "°F";
+                        break;
+                }
             }
 
             @Override
@@ -69,7 +104,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         saveButton = findViewById(R.id.saveButton);
         loadButton = findViewById(R.id.loadButton);
         defaultButton = findViewById(R.id.defaultButton);
-        spinnerUnit = findViewById(R.id.spinnerUnit);
+        spinnerTemperatureUnit = findViewById(R.id.spinnerTemperatureUnit);
+        spinnerSpeedUnit = findViewById(R.id.spinnerSpeedUnit);
 
         saveButton.setOnClickListener(this);
         loadButton.setOnClickListener(this);
@@ -128,6 +164,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         editor.putString(configType + "_longitude", longitude);
         editor.putString(configType + "_latitude", latitude);
         editor.putString(configType + "_refresh", refresh);
+
         editor.apply();
     }
 
