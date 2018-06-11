@@ -8,6 +8,7 @@ import com.example.astroweather.astro.MoonFragment;
 import com.example.astroweather.astro.SunFragment;
 import com.example.astroweather.weather.AdditionalDataFragment;
 import com.example.astroweather.weather.BasicDataFragment;
+import com.example.astroweather.weather.ForecastFragment;
 
 
 public class ScreenSlidePagerAdapterPortrait extends FragmentStatePagerAdapter {
@@ -27,7 +28,7 @@ public class ScreenSlidePagerAdapterPortrait extends FragmentStatePagerAdapter {
                 return new AdditionalDataFragment();
             }
             case 2: {
-                //return new LongTermWeatherForecastFragment();
+                return new ForecastFragment();
             }
             case 3: {
                 return new SunFragment();
