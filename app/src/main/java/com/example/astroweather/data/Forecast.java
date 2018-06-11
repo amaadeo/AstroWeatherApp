@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 public class Forecast implements JSONPopulator {
 
-    private int codeImage;
+    private String codeImage;
     private String day;
     private String lowTemperature;
     private String highTemperature;
@@ -13,14 +13,14 @@ public class Forecast implements JSONPopulator {
 
     @Override
     public void populate(JSONObject data) {
-        this.codeImage = data.optInt("code");
+        this.codeImage = data.optString("code");
         this.day = data.optString("day");
         this.lowTemperature = data.optString("low");
         this.highTemperature = data.optString("high");
         this.description = data.optString("text");
     }
 
-    public int getCodeImage() {
+    public String getCodeImage() {
         return codeImage;
     }
 
