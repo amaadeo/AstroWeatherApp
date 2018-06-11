@@ -10,28 +10,39 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.astro.R;
+import com.example.astroweather.data.Atmosphere;
+import com.example.astroweather.data.Channel;
+import com.example.astroweather.data.Condition;
+import com.example.astroweather.data.Item;
+import com.example.astroweather.data.Location;
+import com.example.astroweather.data.Wind;
+import com.example.astroweather.service.WeatherServiceCallBack;
+import com.example.astroweather.service.YahooWeatherService;
 import com.example.astroweather.settings.SelectCityActivity;
 import com.example.astroweather.settings.SettingsActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements WeatherServiceCallBack {
 
     public static final int PORTRAIT = 1;
     public static final int LANDSCAPE = 2;
+    public static final int NUMBERS_OF_DAYS = 6;
     private TextView longitudeText;
     private TextView latitudeText;
-    private ViewPager viewPagerPhonePortrait;
-    private ViewPager viewPagerPhoneLandscape;
-    private ViewPager viewPagerTabletPortrait;
     private PagerAdapter pagerAdapter;
     private String longitude;
     private String latitude;
+    private YahooWeatherService service;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        service = new YahooWeatherService(this);
+        service.refreshWeather("Lodz");
+        sharedPreferences = getSharedPreferences("weather.xml", 0);
         setUpLayout();
         initElements();
         getConfigValues();
@@ -51,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
     private void setPhoneLayout(Configuration config) {
         if (config.orientation == PORTRAIT) {
             setContentView(R.layout.activity_main_portrait_phone);
-            viewPagerPhonePortrait = findViewById(R.id.viewPagerPhonePortrait);
+            ViewPager viewPagerPhonePortrait = findViewById(R.id.viewPagerPhonePortrait);
             setUpPortraitAdapter(viewPagerPhonePortrait);
         } else if (config.orientation == LANDSCAPE) {
             setContentView(R.layout.activity_main_landscape_phone);
-            viewPagerPhoneLandscape = findViewById(R.id.viewPagerPhoneLandscape);
+            ViewPager viewPagerPhoneLandscape = findViewById(R.id.viewPagerPhoneLandscape);
             setUpLandscapeAdapter(viewPagerPhoneLandscape);
         }
     }
@@ -63,13 +74,12 @@ public class MainActivity extends AppCompatActivity {
     private void setTabletLayout(Configuration config) {
         if (config.orientation == PORTRAIT) {
             setContentView(R.layout.activity_main_portrait_tablet);
-            viewPagerTabletPortrait = findViewById(R.id.viewPagerTabletPortrait);
+            ViewPager viewPagerTabletPortrait = findViewById(R.id.viewPagerTabletPortrait);
             setUpPortraitAdapter(viewPagerTabletPortrait);
         } else if (config.orientation == LANDSCAPE) {
             setContentView(R.layout.activity_main_landscape_tablet);
         }
     }
-
 
     private void setUpPortraitAdapter(ViewPager viewPager) {
         pagerAdapter = new ScreenSlidePagerAdapterPortrait(getSupportFragmentManager());
@@ -103,12 +113,15 @@ public class MainActivity extends AppCompatActivity {
         latitudeText.setText(latitude);
     }
 
-
-    //TODO
-
     @Override
     public void onBackPressed() {
+        service = new YahooWeatherService(this);
+        service.refreshWeather("Lodz");
+        sharedPreferences = getSharedPreferences("weather.xml", 0);
         setUpLayout();
+        initElements();
+        getConfigValues();
+        setLongitudeLatitude();
     }
 
     @Override
@@ -148,5 +161,42 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void serviceSuccess(Channel channel) {
+        Item item = channel.getItem();
+        Location location = channel.getLocation();
+        Atmosphere atmosphere = channel.getAtmosphere();
+        Wind wind = channel.getWind();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("city", location.getCity());
+        editor.putString("country", location.getCountry());
+        editor.putString("wind_direction", wind.getDirection());
+        editor.putString("wind_speed", wind.getSpeed());
+        editor.putString("humidity", atmosphere.getHumidity());
+        editor.putString("pressure", atmosphere.getPressure());
+        editor.putString("visibility", atmosphere.getVisibility());
+        editor.putFloat("longitude", item.getLongitude());
+        editor.putFloat("latitude", item.getLatitude());
+        editor.putString("current_image_code", item.getCondition().getCode());
+        editor.putString("current_date", item.getCondition().getDate());
+        editor.putString("current_temperature", item.getCondition().getTemperature());
+        editor.putString("current_description", item.getCondition().getDescription());
+
+        for (int i = 1; i < NUMBERS_OF_DAYS; i++) {
+            editor.putString("image_code_" + i, item.getForecast(i).getCodeImage());
+            editor.putString("day_" + i, item.getForecast(i).getDay());
+            editor.putString("high_temperature_" + i, item.getForecast(i).getHighTemperature());
+            editor.putString("low_temperature_" + i, item.getForecast(i).getLowTemperature());
+            editor.putString("description_" + i, item.getForecast(i).getDescription());
+        }
+        editor.apply();
+    }
+
+    @Override
+    public void serviceFailure(Exception excepiton) {
+        Toast.makeText(MainActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
     }
 }
