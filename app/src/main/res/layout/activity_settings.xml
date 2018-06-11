@@ -25,7 +25,7 @@
                 android:gravity="center"
                 android:paddingRight="10dp"
                 android:text="@string/temperature_unit"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <Spinner
                 android:id="@+id/spinnerTemperatureUnit"
@@ -52,7 +52,7 @@
                 android:gravity="center"
                 android:paddingRight="10dp"
                 android:text="@string/speed_unit"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <Spinner
                 android:id="@+id/spinnerSpeedUnit"
