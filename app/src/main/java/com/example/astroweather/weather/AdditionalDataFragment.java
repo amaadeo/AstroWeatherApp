@@ -49,7 +49,7 @@ public class AdditionalDataFragment extends Fragment {
         humidityText = rootView.findViewById(R.id.humidityText);
         visibilityText = rootView.findViewById(R.id.visibilityText);
         sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences("weather.xml", 0);
-        speed = sharedPreferences.getString("temperature_unit", "NULL");
+        speed = sharedPreferences.getString("speed_unit", "NULL");
     }
 
     private String changeUnit(String windSpeed) {
@@ -57,7 +57,7 @@ public class AdditionalDataFragment extends Fragment {
             speedUnit = "mph";
         } else {
             speedUnit = "km/h";
-            windSpeed = String.valueOf(Double.parseDouble(windSpeed) * SPEED_IN_MPH);
+            windSpeed = String.valueOf((int)(Double.parseDouble(windSpeed) * SPEED_IN_MPH));
         }
         return windSpeed;
     }

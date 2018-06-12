@@ -119,8 +119,6 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         initElements();
         getConfigValues();
         setLongitudeLatitude();
-
-        Toast.makeText(MainActivity.this, "BACK", Toast.LENGTH_SHORT).show();
     }
 
     @Override

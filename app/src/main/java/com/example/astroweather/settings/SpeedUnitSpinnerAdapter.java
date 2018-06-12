@@ -18,6 +18,7 @@ public class SpeedUnitSpinnerAdapter extends BaseAdapter {
     public SpeedUnitSpinnerAdapter(Activity activity) {
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
     @Override
     public int getCount() {
         return units.length;

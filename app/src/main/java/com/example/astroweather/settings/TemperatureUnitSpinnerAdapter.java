@@ -15,12 +15,11 @@ public class TemperatureUnitSpinnerAdapter extends BaseAdapter {
 
     private String[] units = {"°F", "°C"};
     private LayoutInflater inflater;
-    private SharedPreferences sharedPreferences;
 
     public TemperatureUnitSpinnerAdapter(Activity activity) {
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.sharedPreferences = activity.getSharedPreferences("weather.xml", 0);
     }
+
     @Override
     public int getCount() {
         return units.length;

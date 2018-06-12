@@ -50,6 +50,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         loadConfig("current");
         setValuesText();
         temperatureUnit = shared.getString("temperature_unit", "0");
+        speedUnit = shared.getString("speed_unit", "0");
 
         initTemperatureUnitSpinnerAdapter();
         initSpeedUnitSpinnerAdapter();
@@ -84,15 +85,16 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         speedUnitSpinnerAdapter = new SpeedUnitSpinnerAdapter(this);
         spinnerSpeedUnit.setAdapter(speedUnitSpinnerAdapter);
 
+        spinnerSpeedUnit.setSelection(Integer.parseInt(speedUnit));
         spinnerSpeedUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        speedUnit = "mph";
+                        speedUnit = "0";
                         break;
                     case 1:
-                        speedUnit = "km/h";
+                        speedUnit = "1";
                         break;
                 }
             }
