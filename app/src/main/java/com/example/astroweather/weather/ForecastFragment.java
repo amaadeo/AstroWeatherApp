@@ -27,6 +27,7 @@ public class ForecastFragment extends Fragment {
     private int resource[] = new int[NUMBER_OF_DAYS];
     private Drawable[] weatherIconDrawable = new Drawable[NUMBER_OF_DAYS];
     private String temperatureUnit = "°F";
+    private String tempUnit;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +35,7 @@ public class ForecastFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_long_term_weather_forecast, container, false);
         sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences("weather.xml", 0);
+        tempUnit = sharedPreferences.getString("temperature_unit", "NULL");
 
         for (int i = 0; i < NUMBER_OF_DAYS; i++) {
             maxTemps[i] = rootView.findViewById(getResources().getIdentifier("maxTemp" + (i + 1), "id", getContext().getPackageName()));
@@ -43,12 +45,22 @@ public class ForecastFragment extends Fragment {
 
             resource[i] = getResources().getIdentifier("icon_" + sharedPreferences.getString("image_code_" + (i + 1), "44"), "drawable", Objects.requireNonNull(getContext()).getPackageName());
             weatherIconDrawable[i] = getResources().getDrawable(resource[i], null);
-            maxTemps[i].setText(sharedPreferences.getString("high_temperature_" + (i + 1), "NULL") + temperatureUnit);
-            minTemps[i].setText(sharedPreferences.getString("low_temperature_" + (i + 1), "NULL") + temperatureUnit);
+            maxTemps[i].setText(String.format("%s%s", changeUnit(sharedPreferences.getString("high_temperature_" + (i + 1), "NULL")), temperatureUnit));
+            minTemps[i].setText(String.format("%s%s", changeUnit(sharedPreferences.getString("low_temperature_" + (i + 1), "NULL")), temperatureUnit));
             weatherImages[i].setImageDrawable(weatherIconDrawable[i]);
             days[i].setText(sharedPreferences.getString("day_" + (i + 1), "NULL"));
         }
 
         return rootView;
+    }
+
+    private String changeUnit(String temperature) {
+        if(tempUnit.equals("0") || tempUnit.equals("NULL")) {
+            temperatureUnit = "°F";
+        } else {
+            temperatureUnit = "°C";
+            temperature = String.valueOf((int)((Integer.parseInt(temperature) - 32) / 1.8));
+        }
+        return temperature;
     }
 }
