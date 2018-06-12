@@ -4,4 +4,5 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:textAlignment="center"
-    android:textSize="36sp" />
+    android:textSize="36sp"
+    android:longClickable="true"/>

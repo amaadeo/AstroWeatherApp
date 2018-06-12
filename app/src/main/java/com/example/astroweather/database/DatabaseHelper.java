@@ -40,6 +40,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean deleteData(String city) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (db.delete(TABLE_NAME, "CITY=?", new String[]{city}) == FAIL_CODE) {
+            return  false;
+        } else {
+            return true;
+        }
+    }
+
     public Cursor getListContents() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);

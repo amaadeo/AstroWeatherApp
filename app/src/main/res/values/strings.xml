@@ -1,18 +1,19 @@
 <resources>
     <string name="app_name">AstroWeather</string>
-    <string name="settings_name">Ustawienia</string>
+    <string name="settings_name">Settings</string>
     <string name="about_name">Info</string>
-    <string name="exit_name">Wyjście</string>
-    <string name="city_name">Miasto</string>
-    <string name="longitude_name">Długość geograficzna</string>
-    <string name="latitude_name">Szerokość geograficzna</string>
-    <string name="refresh_name">Czas odświeżania</string>
-    <string name="save_button">Zapisz</string>
-    <string name="load_button">Wczytaj</string>
+    <string name="exit_name">Exit</string>
+    <string name="city_name">City</string>
+    <string name="longitude_name">Longitude</string>
+    <string name="latitude_name">Latitude</string>
+    <string name="refresh_name">Refresh time</string>
+    <string name="save_button">Save</string>
+    <string name="load_button">Load</string>
     <string name="default_button">Default</string>
-    <string name="temperature_unit_text">Jednostka temperatury: </string>
-    <string name="speed_unit_text">Jednostka prędkości: </string>
+    <string name="temperature_unit_text">Temperature unit: </string>
+    <string name="speed_unit_text">Speed unit: </string>
     <string name="celsius">°C</string>
     <string name="fahrenheit"> °F</string>
     <string name="grade">°</string>
+    <string name="delete">Delete</string>
 </resources>
