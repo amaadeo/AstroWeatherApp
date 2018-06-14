@@ -1,6 +1,5 @@
 package com.example.astroweather.settings;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.astro.R;
+import com.example.astroweather.MainActivity;
 import com.example.astroweather.database.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -46,6 +45,18 @@ public class SelectCityActivity extends AppCompatActivity {
 
         initElements();
         displayCityList();
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String cityName = listView.getItemAtPosition(position).toString();
+                Intent myIntent = new Intent(SelectCityActivity.this, MainActivity.class);
+                myIntent.putExtra("cityName", cityName); //Optional parameters
+                startActivity(myIntent);
+            }
+        });
+
     }
 
     private void initElements() {
@@ -102,7 +113,7 @@ public class SelectCityActivity extends AppCompatActivity {
         }
     }
 
-    private void addData(String record) {
+    public void addData(String record) {
         boolean result = databaseHelper.insertData(record);
 
         if (result) {

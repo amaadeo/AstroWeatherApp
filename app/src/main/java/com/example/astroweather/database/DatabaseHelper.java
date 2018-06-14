@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Weather";
     private static final String TABLE_NAME = "City";
@@ -33,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         contentValues.put("CITY", city);
 
-        if ((db.insert(TABLE_NAME, null, contentValues)) == FAIL_CODE) {
+        if ((db.insertWithOnConflict(TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)) == FAIL_CODE) {
             return false;
         } else {
             return true;
@@ -43,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean deleteData(String city) {
         SQLiteDatabase db = this.getWritableDatabase();
         if (db.delete(TABLE_NAME, "CITY=?", new String[]{city}) == FAIL_CODE) {
-            return  false;
+            return false;
         } else {
             return true;
         }
@@ -54,5 +56,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
         return data;
+    }
+
+    public ArrayList<String> citites() {
+        ArrayList<String> array = new ArrayList<>();
+
+        Cursor data = getListContents();
+        array.clear();
+        while (data.moveToNext()) {
+            array.add(data.getString(1));
+        }
+
+        return array;
     }
 }

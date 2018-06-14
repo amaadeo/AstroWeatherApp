@@ -1,5 +1,6 @@
 package com.example.astroweather.settings;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,13 +12,24 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.astro.R;
+import com.example.astroweather.MainActivity;
+import com.example.astroweather.data.Atmosphere;
+import com.example.astroweather.data.Channel;
+import com.example.astroweather.data.Item;
+import com.example.astroweather.data.Location;
+import com.example.astroweather.data.Wind;
+import com.example.astroweather.database.DatabaseHelper;
+import com.example.astroweather.service.WeatherServiceCallBack;
+import com.example.astroweather.service.YahooWeatherService;
 
+import java.sql.SQLOutput;
 import java.util.regex.Pattern;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final static String VALUE_REGEX = "^-?\\d*\\.\\d+$|^-?\\d+$";
     private final static String TIME_REGEX = "\\d+";
+    private static final int NUMBERS_OF_DAYS = 6;
 
     private EditText longitudeValue;
     private EditText latitudeValue;
@@ -37,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private SpeedUnitSpinnerAdapter speedUnitSpinnerAdapter;
     private String temperatureUnit;
     private String speedUnit;
-
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,23 +181,24 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void saveConfig(String configType) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+       // YahooWeatherService service = new YahooWeatherService(this);
+
         SharedPreferences.Editor edit = shared.edit();
-        editor.putString(configType + "_longitude", longitude);
-        editor.putString(configType + "_latitude", latitude);
-        editor.putString(configType + "_refresh", refresh);
 
         edit.putString("temperature_unit", temperatureUnit);
         edit.putString("speed_unit", speedUnit);
 
         edit.apply();
-        editor.apply();
+
+        Intent myIntent = new Intent(SettingsActivity.this, MainActivity.class);
+        myIntent.putExtra("cityName", latitude + "," + longitude); //Optional parameters
+        startActivity(myIntent);
     }
 
     private void loadConfig(String configType) {
-        longitude = sharedPreferences.getString(configType + "_longitude", String.valueOf(getResources().getString(R.string.default_longitude)));
-        latitude = sharedPreferences.getString(configType + "_latitude", String.valueOf(getResources().getString(R.string.default_latitude)));
-        refresh = sharedPreferences.getString(configType + "_refresh", String.valueOf(getResources().getString(R.string.default_refresh)));
+        longitude = shared.getString("longitude", String.valueOf(getResources().getString(R.string.default_longitude)));
+        latitude = shared.getString("latitude", String.valueOf(getResources().getString(R.string.default_latitude)));
+        refresh = shared.getString(configType + "_refresh", String.valueOf(getResources().getString(R.string.default_refresh)));
     }
 
     private void setValues() {
@@ -211,4 +224,47 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private void setRefresh(String refresh) {
         this.refresh = refresh;
     }
+/*
+    @Override
+    public void serviceSuccess(Channel channel) {
+        databaseHelper = new DatabaseHelper(this);
+        Item item = channel.getItem();
+        Location location = channel.getLocation();
+        Atmosphere atmosphere = channel.getAtmosphere();
+        Wind wind = channel.getWind();
+
+        edit.putString("city", location.getCity());
+        edit.putString("country", location.getCountry());
+        edit.putString("wind_direction", wind.getDirection());
+        edit.putString("wind_speed", wind.getSpeed());
+        edit.putString("humidity", atmosphere.getHumidity());
+        edit.putString("pressure", atmosphere.getPressure());
+        edit.putString("visibility", atmosphere.getVisibility());
+        edit.putString("longitude", item.getLongitude());
+        edit.putString("latitude", item.getLatitude());
+        edit.putString("current_image_code", item.getCondition().getCode());
+        edit.putString("current_date", item.getCondition().getDate());
+        edit.putString("current_temperature", item.getCondition().getTemperature());
+        edit.putString("current_description", item.getCondition().getDescription());
+
+        for (int i = 1; i < NUMBERS_OF_DAYS; i++) {
+            edit.putString("image_code_" + i, item.getForecast(i).getCodeImage());
+            edit.putString("day_" + i, item.getForecast(i).getDay());
+            edit.putString("high_temperature_" + i, item.getForecast(i).getHighTemperature());
+            edit.putString("low_temperature_" + i, item.getForecast(i).getLowTemperature());
+            edit.putString("description_" + i, item.getForecast(i).getDescription());
+        }
+
+
+        databaseHelper.insertData(location.getCity());
+
+        System.out.println("CITY: " + location.getCity());
+        System.out.println("Latitude: " + latitude);
+        System.out.println("Longitude: " + longitude);
+    }
+
+    @Override
+    public void serviceFailure(Exception excepiton) {
+
+    }*/
 }

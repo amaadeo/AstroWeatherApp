@@ -121,7 +121,7 @@ public class MoonFragment extends Fragment {
     }
 
     private void setAstroCalculator() {
-        SharedPreferences sharedPref = Objects.requireNonNull(getActivity()).getSharedPreferences("config.xml", 0);
+        SharedPreferences sharedPref = Objects.requireNonNull(getActivity()).getSharedPreferences("weather.xml", 0);
         astroDateTime = new AstroDateTime(
                 Integer.valueOf(yearFormat.format(date)),
                 Integer.valueOf(monthFormat.format(date)),
@@ -134,8 +134,8 @@ public class MoonFragment extends Fragment {
         );
 
         location = new AstroCalculator.Location(
-                Double.valueOf(sharedPref.getString("current_latitude", String.valueOf(getResources().getString(R.string.default_latitude)))),
-                Double.valueOf(sharedPref.getString("current_longitude", String.valueOf(getResources().getString(R.string.default_longitude))))
+                Double.valueOf(sharedPref.getString("latitude", String.valueOf(getResources().getString(R.string.default_latitude)))),
+                Double.valueOf(sharedPref.getString("longitude", String.valueOf(getResources().getString(R.string.default_longitude))))
         );
 
         astroCalculator = new AstroCalculator(

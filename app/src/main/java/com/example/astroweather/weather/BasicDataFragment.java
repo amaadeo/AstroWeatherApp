@@ -46,7 +46,7 @@ public class BasicDataFragment extends Fragment {
 
     private void setWeatherBasicInfo() {
         cityNameText.setText(String.format("%s, %s", sharedPreferences.getString("city", "NULL"), sharedPreferences.getString("country", "NULL")));
-        dateTimeText.setText(sharedPreferences.getString("current_date", "NULL").substring(0, 16));
+        dateTimeText.setText(sharedPreferences.getString("current_date", "NULL"));
         weatherImage.setImageDrawable(weatherIconDrawable);
         temperatureText.setText(String.format("%s%s", temperature, temperatureUnit));
         descriptionText.setText(sharedPreferences.getString("current_description", "NULL"));

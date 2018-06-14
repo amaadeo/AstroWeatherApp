@@ -130,7 +130,7 @@ public class SunFragment extends Fragment {
     }
 
     private void setAstroCalculator() {
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("config.xml", 0);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("weather.xml", 0);
         astroDateTime = new AstroDateTime(
                 Integer.valueOf(yearFormat.format(date)),
                 Integer.valueOf(monthFormat.format(date)),
@@ -143,8 +143,8 @@ public class SunFragment extends Fragment {
         );
 
         location = new AstroCalculator.Location(
-                Double.valueOf(sharedPref.getString("current_latitude", String.valueOf(getResources().getString(R.string.default_latitude)))),
-                Double.valueOf(sharedPref.getString("current_longitude", String.valueOf(getResources().getString(R.string.default_longitude))))
+                Double.valueOf(sharedPref.getString("latitude", String.valueOf(getResources().getString(R.string.default_latitude)))),
+                Double.valueOf(sharedPref.getString("longitude", String.valueOf(getResources().getString(R.string.default_longitude))))
         );
 
         astroCalculator = new AstroCalculator(
@@ -152,7 +152,7 @@ public class SunFragment extends Fragment {
                 location
         );
 
-        refreshTime = Integer.valueOf(sharedPref.getString("current_refresh", String.valueOf(getResources().getString(R.string.default_refresh))));
+        //refreshTime = Integer.valueOf(sharedPref.getString("current_refresh", String.valueOf(getResources().getString(R.string.default_refresh))));
     }
 
     private void setData() {

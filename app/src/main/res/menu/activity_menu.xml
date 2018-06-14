@@ -5,14 +5,14 @@
     tools:context="com.example.astroweather.MainActivity">
 
     <item
+        android:id="@+id/city"
+        android:title="@string/city_name"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/refresh"
         android:icon="@android:drawable/stat_notify_sync"
         android:title="@string/refresh_name"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/city"
-        android:title="@string/city_name"
-        app:showAsAction="never"/>
 
     <item
         android:id="@+id/settings"

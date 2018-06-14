@@ -3,6 +3,8 @@ package com.example.astroweather;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -19,10 +21,14 @@ import com.example.astroweather.data.Condition;
 import com.example.astroweather.data.Item;
 import com.example.astroweather.data.Location;
 import com.example.astroweather.data.Wind;
+import com.example.astroweather.database.DatabaseHelper;
 import com.example.astroweather.service.WeatherServiceCallBack;
 import com.example.astroweather.service.YahooWeatherService;
 import com.example.astroweather.settings.SelectCityActivity;
 import com.example.astroweather.settings.SettingsActivity;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity implements WeatherServiceCallBack {
 
@@ -36,13 +42,24 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
     private String latitude;
     private YahooWeatherService service;
     private SharedPreferences sharedPreferences;
+    private DatabaseHelper databaseHelper;
+    private Cursor data;
+    private ArrayList<String> cityList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        databaseHelper = new DatabaseHelper(this);
+        Intent intent = getIntent();
+        String value = intent.getStringExtra("cityName"); //if it's a string you stored.
         service = new YahooWeatherService(this);
-        service.refreshWeather("Lodz");
         sharedPreferences = getSharedPreferences("weather.xml", 0);
+
+        if (value != null) {
+            service.refreshWeather(value);
+        } else {
+            service.refreshWeather(sharedPreferences.getString("city", "Lodz"));
+        }
 
     }
 
@@ -112,9 +129,10 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
     @Override
     public void onRestart() {
         super.onRestart();
-        service = new YahooWeatherService(this);
-        service.refreshWeather("Lodz");
         sharedPreferences = getSharedPreferences("weather.xml", 0);
+        service = new YahooWeatherService(this);
+        service.refreshWeather(sharedPreferences.getString("city", "Lodz"));
+
         setUpLayout();
         initElements();
         getConfigValues();
@@ -131,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh: {
-                //TODO
+                service.refreshWeather(sharedPreferences.getString("city", "Lodz"));
                 return true;
             }
 
@@ -168,6 +186,12 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         Wind wind = channel.getWind();
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        databaseHelper = new DatabaseHelper(this);
+
+        if (!databaseHelper.citites().contains(channel.getLocation().getCity())) {
+            databaseHelper.insertData(channel.getLocation().getCity());
+        }
+
         editor.putString("city", location.getCity());
         editor.putString("country", location.getCountry());
         editor.putString("wind_direction", wind.getDirection());
@@ -199,6 +223,10 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
 
     @Override
     public void serviceFailure(Exception excepiton) {
-        Toast.makeText(MainActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+        setUpLayout();
+        initElements();
+        getConfigValues();
+        setLongitudeLatitude();
+        Toast.makeText(MainActivity.this, excepiton.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

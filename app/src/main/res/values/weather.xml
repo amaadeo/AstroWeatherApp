@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="city"></string>
+    <string name="city">Lodz</string>
     <string name="country"></string>
     <string name="wind_direction"></string>
     <string name="wind_speed"></string>

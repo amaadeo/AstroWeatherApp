@@ -5,4 +5,4 @@
     android:gravity="center"
     android:textAlignment="center"
     android:textSize="36sp"
-    android:longClickable="true"/>
+    />

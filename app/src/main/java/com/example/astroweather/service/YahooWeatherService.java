@@ -3,9 +3,12 @@ package com.example.astroweather.service;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.AsyncTask;
+
 import com.example.astroweather.data.Channel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,6 +20,7 @@ public class YahooWeatherService {
     private WeatherServiceCallBack callBack;
     private Exception error;
     private String location;
+    private String YQL;
 
     public YahooWeatherService(WeatherServiceCallBack callBack) {
         this.callBack = callBack;
@@ -25,12 +29,19 @@ public class YahooWeatherService {
     @SuppressLint("StaticFieldLeak")
     public void refreshWeather(final String location) {
         this.location = location;
-        new  AsyncTask<String, Void, String>() {
+        new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
 
-                String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", location);
+                System.out.println("SERVICE: " + location);
 
+                if (location.contains(",")) {
+                    YQL = String.format("select * from weather.forecast where woeid in (SELECT woeid FROM geo.places WHERE text=\"(%s)\")", location);
+                } else {
+                    YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", location);
+                }
+
+                System.out.println("YQL: " + YQL);
                 String endpoint = String.format("https://query.yahooapis.com/v1/public/yql?q=%s&format=json", Uri.encode(YQL));
 
                 try {
@@ -77,15 +88,17 @@ public class YahooWeatherService {
                     Channel channel = new Channel();
                     channel.populate(queryResults.optJSONObject("results").optJSONObject("channel"));
 
+
                     callBack.serviceSuccess(channel);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (NullPointerException e) {
+                    callBack.serviceFailure(new Exception("City was not found!"));
                 }
 
             }
         }.execute(location);
     }
-
 
     public String getLocation() {
         return location;
